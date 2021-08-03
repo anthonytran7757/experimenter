@@ -11,6 +11,7 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import React from "react";
+import selectEvent from "react-select-event";
 import PageHome from ".";
 import { mockDirectoryExperimentsQuery } from "../../lib/mocks";
 import { CurrentLocation, RouterSlugProvider } from "../../lib/test-utils";
@@ -78,6 +79,24 @@ describe("PageHome", () => {
         );
       });
     }
+  });
+
+  // TODO: not exhaustively testing all filters here, might be worth adding more?
+  // Filtering itself is more fully covered in filterExperiments.test.tsx
+  it("supports filtering by feature", async () => {
+    await renderAndWaitForLoaded();
+    const expectedFeatureConfigName = "Picture-in-Picture";
+    await selectEvent.select(screen.getByLabelText("Feature"), [
+      expectedFeatureConfigName,
+    ]);
+    await waitFor(() => {
+      const featureConfigNames = screen
+        .getAllByTestId("directory-feature-config-name")
+        .map((el) => el.textContent);
+      expect(
+        featureConfigNames.every((name) => name === expectedFeatureConfigName),
+      ).toBeTruthy();
+    });
   });
 });
 
