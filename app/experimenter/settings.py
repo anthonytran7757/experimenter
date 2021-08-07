@@ -189,6 +189,7 @@ STATICFILES_DIRS = [
     ("scripts", os.path.join(BASE_DIR, "legacy-ui", "scripts")),
     ("imgs", os.path.join(BASE_DIR, "legacy-ui", "imgs")),
     ("nimbus", os.path.join(BASE_DIR, "nimbus-ui", "build")),
+    ("reporting", os.path.join(BASE_DIR, "reporting", "reporting-ui", "assets")),
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -344,7 +345,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     "reporting_generate_report_logs": {
         "task": "experimenter.reporting.tasks.generate_reportlogs",
-        "schedule": config("CELERY_REPORTING_INTERVAL", default=86400, cast=int),
+        "schedule": config("CELERY_REPORTING_INTERVAL", default=60, cast=int),
     },
 }
 
